@@ -1,7 +1,9 @@
-﻿namespace PracticeAPIWithCSharp.API.Interfaces
+﻿using PracticeAPIWithCSharp.API.Models;
+
+namespace PracticeAPIWithCSharp.API.Interfaces
 {
     public interface IJwt
     {
-        string GenerateToken(string token);
+        Response<Tokens> GenerateToken(User user);
     }
 }
