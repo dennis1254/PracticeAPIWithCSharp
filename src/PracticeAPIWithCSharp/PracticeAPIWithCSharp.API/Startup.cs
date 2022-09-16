@@ -8,6 +8,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using PracticeAPIWithCSharp.API.Interfaces;
+using PracticeAPIWithCSharp.API.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,6 +32,7 @@ namespace PracticeAPIWithCSharp.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddSingleton<IJwt, JwtService>();
             services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -48,6 +52,10 @@ namespace PracticeAPIWithCSharp.API
                     IssuerSigningKey = new SymmetricSecurityKey(Key)
                 };
             });
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Practice API", Version = "v1" });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -64,6 +72,11 @@ namespace PracticeAPIWithCSharp.API
             app.UseAuthentication();
 
             app.UseAuthorization();
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("v1/swagger.json", "My API V1");
+            });
 
             app.UseEndpoints(endpoints =>
             {
