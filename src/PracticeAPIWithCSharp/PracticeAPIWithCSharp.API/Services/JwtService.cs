@@ -27,7 +27,7 @@ namespace PracticeAPIWithCSharp.API.Services
         }
         public Response<Tokens> GenerateToken(User user)
         {
-            if (!UsersRecords.Any(x => x.Key == user.Name && x.Value == user.Password))
+            if (!UsersRecords.Any(x => x.Key == user.UserName && x.Value == user.Password))
             {
                 return new Response<Tokens> { Message = "Invalid user credentials"};
             }
@@ -39,7 +39,7 @@ namespace PracticeAPIWithCSharp.API.Services
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                  new Claim(ClaimTypes.Name, user.Name)
+                  new Claim(ClaimTypes.Name, user.UserName)
                 }),
                 Expires = DateTime.UtcNow.AddSeconds(_config.GetValue<int>("JWT:ExpirationInSeconds")),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(tokenKey), SecurityAlgorithms.HmacSha256Signature)
