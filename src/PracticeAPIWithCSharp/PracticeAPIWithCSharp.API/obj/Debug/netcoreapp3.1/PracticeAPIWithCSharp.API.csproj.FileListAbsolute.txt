@@ -31,3 +31,13 @@ C:\Personalbox\PracticeAPIWithCSharp\src\PracticeAPIWithCSharp\PracticeAPIWithCS
 C:\Personalbox\PracticeAPIWithCSharp\src\PracticeAPIWithCSharp\PracticeAPIWithCSharp.API\obj\Debug\netcoreapp3.1\PracticeAPIWithCSharp.API.dll
 C:\Personalbox\PracticeAPIWithCSharp\src\PracticeAPIWithCSharp\PracticeAPIWithCSharp.API\obj\Debug\netcoreapp3.1\PracticeAPIWithCSharp.API.pdb
 C:\Personalbox\PracticeAPIWithCSharp\src\PracticeAPIWithCSharp\PracticeAPIWithCSharp.API\obj\Debug\netcoreapp3.1\PracticeAPIWithCSharp.API.genruntimeconfig.cache
+C:\Personalbox\PracticeAPIWithCSharp\src\PracticeAPIWithCSharp\PracticeAPIWithCSharp.API\bin\Debug\netcoreapp3.1\Microsoft.Win32.Registry.dll
+C:\Personalbox\PracticeAPIWithCSharp\src\PracticeAPIWithCSharp\PracticeAPIWithCSharp.API\bin\Debug\netcoreapp3.1\System.CodeDom.dll
+C:\Personalbox\PracticeAPIWithCSharp\src\PracticeAPIWithCSharp\PracticeAPIWithCSharp.API\bin\Debug\netcoreapp3.1\System.Management.dll
+C:\Personalbox\PracticeAPIWithCSharp\src\PracticeAPIWithCSharp\PracticeAPIWithCSharp.API\bin\Debug\netcoreapp3.1\System.Security.AccessControl.dll
+C:\Personalbox\PracticeAPIWithCSharp\src\PracticeAPIWithCSharp\PracticeAPIWithCSharp.API\bin\Debug\netcoreapp3.1\System.Security.Principal.Windows.dll
+C:\Personalbox\PracticeAPIWithCSharp\src\PracticeAPIWithCSharp\PracticeAPIWithCSharp.API\bin\Debug\netcoreapp3.1\runtimes\win\lib\netstandard2.0\Microsoft.Win32.Registry.dll
+C:\Personalbox\PracticeAPIWithCSharp\src\PracticeAPIWithCSharp\PracticeAPIWithCSharp.API\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp3.1\System.Management.dll
+C:\Personalbox\PracticeAPIWithCSharp\src\PracticeAPIWithCSharp\PracticeAPIWithCSharp.API\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.0\System.Security.AccessControl.dll
+C:\Personalbox\PracticeAPIWithCSharp\src\PracticeAPIWithCSharp\PracticeAPIWithCSharp.API\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp2.1\System.Security.Principal.Windows.dll
+C:\Personalbox\PracticeAPIWithCSharp\src\PracticeAPIWithCSharp\PracticeAPIWithCSharp.API\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.1\System.Security.Principal.Windows.dll

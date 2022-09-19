@@ -7,18 +7,14 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace PracticeAPIWithCSharp.API.Services
 {
     public class JwtService : IJwt
     {
-        Dictionary<string, string> UsersRecords = new Dictionary<string, string>
-        {
-            { "user1","password1"},
-            { "user2","password2"},
-            { "user3","password3"},
-        };
+       
 
         private readonly IConfiguration _config;
         public JwtService(IConfiguration config)
@@ -27,11 +23,7 @@ namespace PracticeAPIWithCSharp.API.Services
         }
         public Response<Tokens> GenerateToken(User user)
         {
-            if (!UsersRecords.Any(x => x.Key == user.UserName && x.Value == user.Password))
-            {
-                return new Response<Tokens> { Message = "Invalid user credentials"};
-            }
-
+            
             // Else we generate JSON Web Token
             var tokenHandler = new JwtSecurityTokenHandler();
             var tokenKey = Encoding.UTF8.GetBytes(_config["JWT:Key"]);
@@ -41,16 +33,57 @@ namespace PracticeAPIWithCSharp.API.Services
                 {
                   new Claim(ClaimTypes.Name, user.UserName)
                 }),
-                Expires = DateTime.UtcNow.AddSeconds(_config.GetValue<int>("JWT:ExpirationInSeconds")),
+				Issuer = _config["JWT:Issuer"],
+				Audience = _config["JWT:Audience"],
+				Expires = DateTime.UtcNow.AddSeconds(_config.GetValue<int>("JWT:ExpirationInSeconds")),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(tokenKey), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
-            return new Response<Tokens>
+			var refreshToken = GenerateRefreshToken();			
+
+			return new Response<Tokens>
             { 
                 Message = "Successful",
                 Success=true,
-                Data = new Tokens { Token = tokenHandler.WriteToken(token) }
+                Data = new Tokens { AccessToken = tokenHandler.WriteToken(token),RefreshToken =  refreshToken}
             };
         }
-    }
+		
+
+		public string GenerateRefreshToken()
+		{
+			var randomNumber = new byte[32];
+			using (var rng = RandomNumberGenerator.Create())
+			{
+				rng.GetBytes(randomNumber);
+				return Convert.ToBase64String(randomNumber);
+			}
+		}
+
+		public ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
+		{
+			var Key = Encoding.UTF8.GetBytes(_config["JWT:Key"]);
+
+			var tokenValidationParameters = new TokenValidationParameters
+			{
+				ValidateIssuer = false,
+				ValidateAudience = false,
+				ValidateLifetime = false,
+				ValidateIssuerSigningKey = true,
+				IssuerSigningKey = new SymmetricSecurityKey(Key),
+				ClockSkew = TimeSpan.Zero
+			};
+
+			var tokenHandler = new JwtSecurityTokenHandler();
+			var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out SecurityToken securityToken);
+			JwtSecurityToken jwtSecurityToken = securityToken as JwtSecurityToken;
+			if (jwtSecurityToken == null || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
+			{
+				throw new SecurityTokenException("Invalid token");
+			}
+
+
+			return principal;
+		}
+	}
 }
