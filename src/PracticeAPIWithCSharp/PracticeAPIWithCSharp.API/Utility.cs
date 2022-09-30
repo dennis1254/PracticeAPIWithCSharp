@@ -6,6 +6,15 @@ namespace PracticeAPIWithCSharp.API
 {
     public class Utility
     {
+        //Temporary DB
+        public static List<User> UsersRecords = new List<User>()
+        {
+            new User{ UserName="user1",Password="password1"},
+            new User{ UserName="user2",Password="password2"},
+
+            new User{ UserName="user3",Password="password3"}
+        };
+        //To be moved
         public static List<HardDrive> GetHardDrives()
         {
             ManagementObjectSearcher searcher = new
@@ -21,14 +30,9 @@ namespace PracticeAPIWithCSharp.API
             }
             return hdCollection;
         }
-        public static List<User> UsersRecords = new List<User>()
-        {
-            new User{ UserName="user1",Password="password1"},
-            new User{ UserName="user2",Password="password2"},
-
-            new User{ UserName="user3",Password="password3"}
-        };
+       
     }
+    //To be moved
     public class HardDrive
     {
         public string Model { get; set; }

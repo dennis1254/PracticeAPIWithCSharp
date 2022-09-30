@@ -27,7 +27,9 @@ namespace PracticeAPIWithCSharp.API.Services
             // Else we generate JSON Web Token
             var tokenHandler = new JwtSecurityTokenHandler();
             var tokenKey = Encoding.UTF8.GetBytes(_config["JWT:Key"]);
-            var tokenDescriptor = new SecurityTokenDescriptor
+			var expiresAt = DateTime.UtcNow.AddSeconds(_config.GetValue<int>("JWT:ExpirationInSeconds"));
+
+			var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
@@ -35,7 +37,7 @@ namespace PracticeAPIWithCSharp.API.Services
                 }),
 				Issuer = _config["JWT:Issuer"],
 				Audience = _config["JWT:Audience"],
-				Expires = DateTime.UtcNow.AddSeconds(_config.GetValue<int>("JWT:ExpirationInSeconds")),
+				Expires = expiresAt,
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(tokenKey), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
@@ -45,7 +47,7 @@ namespace PracticeAPIWithCSharp.API.Services
             { 
                 Message = "Successful",
                 Success=true,
-                Data = new Tokens { AccessToken = tokenHandler.WriteToken(token),RefreshToken =  refreshToken}
+                Data = new Tokens { AccessToken = tokenHandler.WriteToken(token),RefreshToken =  refreshToken, ExpiresAt = expiresAt}
             };
         }
 		

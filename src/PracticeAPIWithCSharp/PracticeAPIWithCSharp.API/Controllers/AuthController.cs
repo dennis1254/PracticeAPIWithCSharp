@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using PracticeAPIWithCSharp.API.Interfaces;
 using PracticeAPIWithCSharp.API.Models;
+using PracticeAPIWithCSharp.API.ViewModels;
 using System.Collections.Generic;
 using System.Management;
 
@@ -17,7 +18,7 @@ namespace PracticeAPIWithCSharp.API.Controllers
             _service = service;
         }
         [HttpPost]
-        public ActionResult<Response<Tokens>> Authenticate(User user)
+        public ActionResult<Response<Tokens>> Authenticate(LoginModel user)
         {
             var resp = _service.Authenticate(user);
             var userAgent = Request.Headers["user-agent"];
@@ -34,7 +35,7 @@ namespace PracticeAPIWithCSharp.API.Controllers
         }
 
         [HttpPost]
-        public ActionResult<Response<Tokens>> Refresh(Tokens tokens)
+        public ActionResult<Response<Tokens>> Refresh(RefreshModel tokens)
         {
             var resp = _service.RefreshToken(tokens);
 

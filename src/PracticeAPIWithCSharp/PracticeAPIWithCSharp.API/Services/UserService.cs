@@ -1,5 +1,7 @@
-﻿using PracticeAPIWithCSharp.API.Interfaces;
+﻿using AutoMapper;
+using PracticeAPIWithCSharp.API.Interfaces;
 using PracticeAPIWithCSharp.API.Models;
+using PracticeAPIWithCSharp.API.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,30 +12,33 @@ namespace PracticeAPIWithCSharp.API.Services
     {
       
         private readonly IJwt _jwt;
+        private readonly IMapper _mapper;
 
-        public UserService(IJwt jwt)
+        public UserService(IJwt jwt, IMapper mapper)
         {
             _jwt = jwt;
+            _mapper = mapper;
         }
 
         public UserService()
         {
                 
         }
-        public Response<Tokens> Authenticate (User user)
+        public Response<Tokens> Authenticate (LoginModel model)
         {
-            if (!Utility.UsersRecords.Any(x => x.UserName == user.UserName && x.Password == user.Password))
+            if (!Utility.UsersRecords.Any(x => x.UserName == model.UserName && x.Password == model.Password))
             {
                 return new Response<Tokens> { Message = "Invalid user credentials" };
             }
+            var user = _mapper.Map<User>(model);
             var resp = _jwt.GenerateToken(user);
-            user = Utility.UsersRecords.FirstOrDefault(x => x.UserName == user.UserName);
+            user = Utility.UsersRecords.FirstOrDefault(x => x.UserName == model.UserName);
             user.RefreshToken = resp.Data.RefreshToken;
             user.IsActive = true;
             return resp;
 
         }
-        public Response<Tokens> RefreshToken(Tokens tokens)
+        public Response<Tokens> RefreshToken(RefreshModel tokens)
         {
             try
             {
